@@ -43,7 +43,7 @@ jobs:
         permissions:
             id-token: write
             contents: read
-            
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -63,5 +63,5 @@ jobs:
                 aws-region: ${{ env.AWS_REGION }}
 
             - name: Run tests
-              run: python -m unittest test_lambda_function
+              run: python -m unittest ./tests/test_lambda_function
 
