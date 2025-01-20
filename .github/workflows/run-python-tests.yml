@@ -11,6 +11,10 @@ env:
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        permissions:
+            id-token: write
+            contents: read
+
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -20,15 +24,38 @@ jobs:
               with:
                   python-version: 3.12
 
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                  role-to-assume: arn:aws:iam::220664688409:role/Backend_CI_CD_Role
+                  aws-region: ${{ env.AWS_REGION }}
+
             - name: Install dependencies
-              run: pip install 'moto[ec2,s3,all]'
+              run: | 
+                pip install 'moto[all]'
+                pip install boto3
             
     test:
         runs-on: ubuntu-latest
+        needs: deploy
         steps:
             - name: Checkout code
-              uses: actions/checkout@v4    
+              uses: actions/checkout@v4
 
-        permissions:
-            id-token: write
-            contents: read
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              
+            - name: Install dependencies
+              run: | 
+                pip install 'moto[all]'
+                pip install boto3
+            
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                role-to-assume: arn:aws:iam::220664688409:role/Backend_CI_CD_Role
+                aws-region: ${{ env.AWS_REGION }}
+
+            - name: Run tests
+              run: python -m unittest test_lambda_function
+
