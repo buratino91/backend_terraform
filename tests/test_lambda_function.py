@@ -45,7 +45,7 @@ class TestLambdaFunction(unittest.TestCase):
         table = self.dynamodb.Table(TABLE_NAME)
         data = {
             'id': 'page_views',
-            'Count': 3
+            'Count': 4
         }
         write(data=data, table_name=TABLE_NAME)
         response = table.get_item(Key={'id': 'page_views'})
