@@ -1,0 +1,34 @@
+name: run-python-tests
+on:
+    push:
+        branches:
+            -main
+
+env:
+    AWS_REGION: us-east-1
+    TABLE_NAME: ViewerCounter
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Python
+              uses: actions/setup-python@v4
+              with:
+                  python-version: 3.12
+
+            - name: Install dependencies
+              run: pip install 'moto[ec2,s3,all]'
+            
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4    
+
+        permissions:
+            id-token: write
+            contents: read
