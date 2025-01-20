@@ -1,16 +1,17 @@
 name: run-python-tests
 on:
-    push:
-        branches:
-            -main
+  push:
+    branches:
+      - main
 
 env:
-    AWS_REGION: us-east-1
-    TABLE_NAME: ViewerCounter
+   AWS_REGION: us-east-1
+   TABLE_NAME: test
 
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        
         permissions:
             id-token: write
             contents: read
