@@ -11,7 +11,7 @@ env:
 jobs:
     deploy:
         runs-on: ubuntu-latest
-        
+
         permissions:
             id-token: write
             contents: read
@@ -39,6 +39,11 @@ jobs:
     test:
         runs-on: ubuntu-latest
         needs: deploy
+
+        permissions:
+            id-token: write
+            contents: read
+            
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
